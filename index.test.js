@@ -21,4 +21,35 @@ describe("./musicians endpoint", () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.id).toEqual(2);
   });
+
+  it("should create a new musician when POST method is called", async () => {
+    const newMusician = {
+      name: "Milo",
+      instrument: "flute",
+    };
+    const res = await request(app).post("/musicians").send(newMusician);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.name).toEqual(newMusician.name);
+    expect(res.body.instrument).toEqual(newMusician.instrument);
+  });
+
+  it("should update a musician when PUT method is called", async () => {
+    const newMusician = {
+      name: "Harry",
+      instrument: "flute",
+    };
+    const res = await request(app).put("/musicians/4").send(newMusician);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.name).toEqual(newMusician.name);
+    expect(res.body.instrument).toEqual(newMusician.instrument);
+  });
+
+  it("should delete a musician when DELETE method is called", async () => {
+    const res = await request(app).delete("/musicians/4");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.name).toEqual("Harry");
+    expect(res.body.instrument).toEqual("flute");
+  });
 });
