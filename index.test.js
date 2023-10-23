@@ -30,6 +30,17 @@ describe("musicians endpoint", () => {
     expect(res.body.instrument).toEqual(newMusician.instrument);
   });
 
+  it("should return an error if the POST request is sent with empty values", async () => {
+    const newMusician = {
+      name: "",
+      instrument: "",
+    };
+    const res = await request(app).post("/musicians").send(newMusician);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.error.length).toBe(4);
+  });
+
   it("should update a musician when PUT method is called", async () => {
     const newMusician = {
       name: "Harry",
@@ -40,6 +51,17 @@ describe("musicians endpoint", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body.name).toEqual(newMusician.name);
     expect(res.body.instrument).toEqual(newMusician.instrument);
+  });
+
+  it("should return an error if the PUT request is sent with empty values", async () => {
+    const newMusician = {
+      name: "",
+      instrument: "",
+    };
+    const res = await request(app).put("/musicians/4").send(newMusician);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.error.length).toBe(4);
   });
 
   it("should delete a musician when DELETE method is called", async () => {
